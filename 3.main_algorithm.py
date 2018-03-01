@@ -64,3 +64,62 @@ def cost(theta):
 
 
 
+
+def gradient_descent(X):
+
+
+    grad=np.zeros((features+1,1),dtype=float)              #array of new_gradient generated thetas
+    new_x=[0]*int(features+1)                                 #array for formatting X
+
+    for i in range(features+1):                           #X formatted as 1*66 elements of each column changed to 66*1
+        new_x[i]=np.array(X[:,i]).reshape(m,1)          #for simplifying multiplication
+    #print((sigmoid(X.dot(grad))-y))
+    #print(new_x[1])
+
+    #theta_new=np.zeros((2501,1),dtype=float)
+    theta_new=theta
+    count=0
+
+    for i in range(200000):
+        for j in range(features+1):
+            grad[j]=theta_new[j]-alpha*((1./m)*np.sum((sigmoid(X.dot(theta_new))-y)*new_x[j]))
+        theta_new=grad
+        #print(theta_new[1],theta_new[2],theta_new[3])
+        count+=1
+        #print(count)
+        # if(i==10000):
+        #     pl.plot(X.dot(theta_new))
+        #     pl.show()
+        # if(i==20000):
+        #     pl.plot(X.dot(theta_new))
+        #     pl.show()
+        # if(i==30000):
+        #     pl.plot(X.dot(theta_new))
+        #     pl.show()
+        # if(i==40000):
+        #     pl.plot(X.dot(theta_new))
+        #     pl.show()
+            
+
+    return grad
+
+
+print("cost function")
+J=cost(theta)
+print(J)
+
+print("gradient descent")
+grad=gradient_descent(X)
+print(grad)
+
+print("cost function")
+J=cost(grad)
+print(J)
+
+
+f=open("theta","wb")
+pickle.dump(grad,f)
+f.close()
+print("successfull")
+
+
